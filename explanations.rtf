@@ -1,0 +1,210 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 \ul \ulc0 UDAND TECHNICAL INTERVIEW
+\b0 \ulnone \
+\
+
+\b \ul Question 1
+\b0 \ulnone \
+
+\b Design Choices\
+
+\b0 For this problem, we need to compare individual letters in one string (
+\i s
+\i0 ) with a substring (
+\i t
+\i0 ). \
+\
+
+\b Initially,
+\b0  I ended up splitting each string into lists and comparing the values in the list across each other with for loops. However, 
+\b this only matched individual characters, not the substring and its anagrams.\
+\
+
+\b0 Thus, based on reviewer feedback and a little research, I transformed the substring into dictionary format, and used the concept of a \'93sliding window\'94 to parse through the main string. Slices the length of the substring are transformed into dict format and compared with the substring dictionary. Since dict format is unsorted, it is easy to compare the substring and the slices (i.e. unnecessary to iterate through all anagram combinations). If the slice does not match the substring, the slice dictionary is cleared.
+\b \
+\
+Time Efficiency
+\b0 \
+The time efficiency of this function ends up being O(s * (len(
+\i s
+\i0 ) - len(
+\i t
+\i0 ) + 1)), since the length of 
+\i t 
+\i0 will determine how many iterations the sliding window can match.\
+\
+
+\b Space Efficiency
+\b0 \
+The space efficiency of this function is O(1). This is because while the substring and string slices need to be saved into dictionaries, both dictionaries would only contain a maximum of 26 lower case alphabetical keys, and the corresponding count for each letter.\
+\
+\
+
+\b \ul Question 2
+\b0 \ulnone \
+
+\b Design Choices\
+
+\b0 This problem is similar to Q1, where we need to compare letters in a string with a substring, but the substring is inside the main string. This function creates slices of the string and compares it against the the string to see whether it matches a piece of the string in reverse (palindrome), and returns the longest match. Again, like Q1, there is an initial check to ensure that the value is a string, and the string is converted into lower case, and punctuation and spaces are removed.\
+\
+
+\b Time Efficiency
+\b0 \
+The time efficiency of this function is O(
+\i a
+\i0 ^3), since this string is matching against 
+\i a
+\i0 , all possible substrings starting with 
+\i a
+\i0 , and then also checking whether it is a palindrome (i.e. whether the string is a reverse.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 Space Efficiency
+\b0 \
+The space efficiency of this function would at worst be O(a^3). This is because the string itself, the substring, and the current longest palindrome are all saved. If 
+\i a 
+\i0 is a complete palindrome, then all three strings would equal 
+\i a.
+\i0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 \ul Question 3
+\b0 \ulnone \
+
+\b Design Choices
+\b0 \
+This function takes in an undirected graph, and is supposed to return a minimum spanning tree. Researching the problem reveals that it involves the direct implementation of Kruskal's algorithm. It follows three main steps:\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\i \cf0 1. Sort all the edges in non-decreasing order of their weight.
+\i0 \
+The function first breaks up the graph in order to have a list of all possible vertices (here labelled nodes), and the parent and rank of each node. The dictionary is then translated into a list format (labelled 
+\i edge_list
+\i0 ) and sorted. This was done since the dict format cannot be sorted, and does not list all possible edges.\
+\
+
+\i 2. Pick the smallest edge. Check if it forms a cycle with the spanning tree formed so far. If cycle is not formed, include this edge. Else, discard it.
+\i0 \
+The functions 
+\i find 
+\i0 and 
+\i union 
+\i0 needed to be established, in order to check whether each edge forms a cycle. 
+\i Find 
+\i0 is a recursive function looping over itself until the parent is found.
+\i  Union 
+\i0 compares two parents of the nodes, and defers to the parent with higher 
+\i rank 
+\i0 value (i.e. whichever has more children).\
+\
+
+\i 3. Repeat step#2 until there are (V-1) edges in the spanning tree.
+\i0 \
+A minimum spanning tree\'92s number of edges is the number of vertices minus 1. Thus, a while loop is used to find and save edges that don\'92t create a cycle until that number is reached.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 Time Efficiency
+\b0 \
+The time efficiency of this function is O(E log V), where E is the number of edges, and V is the number of vertices. The worst case scenario time-wise would loop through every edge of every vertex. \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 Space Efficiency
+\b0 \
+The space efficiency of this function would at worst be O(V^2), where V is the number of vertices. \
+\
+This function takes a undirected graph. The total possible number of edges would equate to (V(V -1)) / 2. As these edges would need to be saved into a list, approximating this equation would come to O(V^2).
+\i \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\i0 \cf0 \
+\
+
+\b \ul Question 4\
+\ulnone Design Choices
+\b0 \
+This problem relies on the rules of a Binary Search Tree. A BST requires that each node only has two children, and that the values on the left child of each node be equal or less than the node, and values on the right child to be equal or greater than the node.\
+\
+The function finds the least common ancestor (LCA) of two nodes in a BST, but requires the root node in addition to the two children and the BST.\
+\
+
+\b In my first iteration, 
+\b0 I used a while loop to iterate through all ancestors of one child (
+\i n1
+\i0 ) until the root is reached, and then iterated through all ancestors of the second child (
+\i n2
+\i0 ), and returned the first ancestor it has in common.\
+\
+Based on feedback, in order to make the function more efficient, I recreated the function to begin traversing the BST from the root. Based on the BST rules, there can be only two children per node; thus, I created a small list of these two children with the lower value being first, since the value is based on list index. \
+\
+The former would be chosen as the new ancestor if 
+\i n1
+\i0  and 
+\i n2
+\i0  were both < root, the latter as new ancestor if 
+\i n1
+\i0  and 
+\i n2
+\i0  were >=  root. The last possibility was that 
+\i n1 
+\i0 was >=/smaller than the root, and vice versa for 
+\i n2, 
+\i0 in which case the LCA was returned.\
+\
+
+\b Time Efficiency
+\b0 \
+The time efficiency of this function depends on the way the tree is built. Worst case, time efficiency is O(
+\i n
+\i0 ), where 
+\i n
+\i0  is the height of the tree. It is technically possible for a BST to be unbalanced on one side, and hence every node has to be iterated through. \
+\
+However, a balanced BST would have an efficiency of O(log 
+\i n
+\i0 ), since BSTs can be traversed quickly by comparing the child node with the parent. \
+\
+
+\b Space Efficiency\
+
+\b0 My initial function saved all possible ancestors in a list, giving a space efficiency of O(
+\i n
+\i0 ). Under the new function though, values are assessed in constant space, so its space efficiency is O(1).\
+\
+\
+
+\b \ul Question 5
+\b0 \ulnone \
+
+\b Design Choices\
+
+\b0 This function requires that we return a value of a specific Linked List (LL) node (
+\i m 
+\i0 in this function), but where this node is counted from the end of the list. This problem involves traversing through a LL, but the list itself is not used in the function, only the first node of the linked list.\
+\
+Thus, the function must traverse through the LL to the end, in order to find the length. 
+\i m 
+\i0 is then subtracted from the LL length number, and the LL is traversed again until that position is found, and the value is returned.\
+\
+The LinkedList class (and its append function) was created in order to provide examples to be used.\
+\
+
+\b Time Efficiency
+\b0 \
+The time efficiency is again O(n), where n is the length of the LL. At most, the LL would be looped through twice, where the value of the last node in the LL would be returned.\
+\
+
+\b Space Efficiency\
+
+\b0 The space efficiency of the function itself is very small, being O(1). As mentioned above, creating the LL takes up space depending on the number of nodes, but the function itself does not take and save any values, except for counter values for checking the LL length and finding the corresponding index number of the LL to return.}
